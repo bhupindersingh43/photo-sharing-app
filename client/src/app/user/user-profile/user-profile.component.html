@@ -1,0 +1,35 @@
+<main role="main">
+    <div class="card border-0">
+        <h3 class="card-header" *ngIf="userDetails">Profile Update</h3>
+    </div>
+
+    <div class="py-5 bg-light user-profile-contianer">
+        <div class="col-md-6 offset-md-3">
+            <div *ngIf="response?.status" class="alert alert-success mb-3" role="alert">
+                User Profile Updated Succesfully
+            </div>
+            <form [formGroup]="userProfilUpdateForm" (ngSubmit)="onSubmit()">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="fullName" formControlName="fullName" placeholder="Full Name" required
+                    [ngClass]="{'invalid-textbox' :submitted && f['fullName']['errors'] }">
+                    <div *ngIf="submitted && f['fullName']['errors']">
+                        <label *ngIf="f['fullName']['errors']['required']" class="validation-message">This field is required.</label>
+                        <label *ngIf="f['fullName']['errors']['maxlength']" class="validation-message">Enter 30 characters atmost.</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="text-center">
+                        <img *ngIf="!preview" class="user-image-icon" [src]="userDetails?.profilePhoto?.length > 0 ? imageBaseUrl+userDetails.profilePhoto : imageBaseUrl+'/profile-photos/profile-icon.png'" alt="profile-photo">
+                        <img *ngIf="preview" class="user-image-icon" [src]="preview" alt="profile-photo">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <input #fileUpload type="file" id="fileUpload" class="form-control" formControlName="profilePhoto" accept="image/*" (change)="selectFiles($event)" />
+                </div>
+                <button type="submit" id="userProfileSubmit" class="btn btn-primary">Save changes</button>
+            </form>
+        </div>
+    </div>
+
+</main>
